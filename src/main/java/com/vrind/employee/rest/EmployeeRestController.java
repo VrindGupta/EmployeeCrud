@@ -45,7 +45,7 @@ public class EmployeeRestController {
     }
 
     @DeleteMapping("/{empId}")
-    @CacheEvict(value = "employees", key = "'Employee' + #employeeDTO.getId()")
+    @CacheEvict(value = "employees", key = "'Employee' + #empId()")
     public ResponseEntity<EmployeeDTO> deleteEmployee(@PathVariable int empId){
         return ResponseEntity.ok().body(employeeService.deleteEmployee(empId));
     }
