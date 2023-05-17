@@ -63,16 +63,17 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = employeeRepository.findById(employeeDTO.getId()).get();
-        employee.setName(employeeDTO.getName());
-        employee.setSurname(employeeDTO.getSurname());
-        employee.setEmail(employeeDTO.getEmail());
-        Optional<Employee> dbEmployee = Optional.of(employeeRepository.save(employee));
-        if(dbEmployee.isPresent()){
+        Optional<Employee> employee = employeeRepository.findById(employeeDTO.getId());
+        if(employee.isPresent()){
+            Employee temp = modelmapper.map(employee, Employee.class);
+            temp.setName(employeeDTO.getName());
+            temp.setSurname(employeeDTO.getSurname());
+            temp.setEmail(employeeDTO.getEmail());
+            Optional<Employee> dbEmployee = Optional.of(employeeRepository.save(temp));
             return modelmapper.map(dbEmployee.get(), EmployeeDTO.class);
         }
         else{
-            throw new EmployeeNotSavedException("Employee is not Updated");
+            throw new EmployeeNotFoundException("Employee is not Found");
         }
     }
 
