@@ -3,6 +3,7 @@ package com.vrind.employee.rest;
 import com.vrind.employee.dto.EmployeeDTO;
 import com.vrind.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/")
+    @Cacheable(value="employees")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(){
         return ResponseEntity.ok().body(employeeService.findAll());
     }
